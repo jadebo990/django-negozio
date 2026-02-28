@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="it">
+    <head>
+        <title>Ordini</title>
+    </head>
+    <body>
+        <h1>Ordini</h1>
+        <h2>Lista ordini:</h2>
+        <ul>
+            {% for o in ordini %}
+                <li>{{ o.cliente.email }} - {{ o.totale }}€
+                    Dettagli:
+                    <ul>
+                        {% for d in o.dettagli.all %}
+                            <li>{{ d.prodotto.nome }} - x{{ d.quantita }} - {{ d.prezzo_unitario }}</li>
+                        {% endfor %}
+                    </ul>
+                </li>
+            {% endfor %}
+        </ul>
+
+        {% if errore %}
+            <p>{{ errore }}</p>
+        {% endif %}
+
+        <a href="{% url 'index' %}">Torna alla home</a>
+    </body>
+</html>

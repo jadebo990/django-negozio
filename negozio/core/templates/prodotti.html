@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="it">
+    <head>
+        <title>Prodotti</title>
+    </head>
+    <body>
+        <h1>Prodotti</h1>
+        <h2>Lista prodotti:</h2>
+        <ul>
+            {% for p in prodotti %}
+                <li>{{ p.nome }} - {{ p.categoria }} - {{ p.prezzo }}€</li>
+            {% endfor %}
+        </ul>
+
+        {% if errore %}
+            <p>{{ errore }}</p>
+        {% endif %}
+
+        <a href="{% url 'index' %}">Torna alla home</a>
+    </body>
+</html>
