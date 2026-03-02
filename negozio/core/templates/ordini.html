@@ -3,25 +3,42 @@
 {% block title %}Ordini{% endblock title %}
 
 {% block body %}
+    {% include 'includes/header.html' %}
     <h1>Ordini</h1>
     <h2>Lista ordini:</h2>
-    <ul>
-        {% for o in ordini %}
-            <li>{{ o.cliente.email }} - {{ o.totale }}€
-                Dettagli:
-                <ul>
-                    {% for d in o.dettagli.all %}
-                        <li>{{ d.prodotto.nome }} - x{{ d.quantita }} - {{ d.prezzo_unitario }}</li>
-                    {% endfor %}
-                </ul>
-            </li>
-        {% endfor %}
-    </ul>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID ordine</th>
+                <th>Email cliente</th>
+                <th>Prodotti</th>
+                <th>Totale ordine (€)</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for o in ordini %}
+                <tr>
+                    <td>{{ o.id }}</td>
+                    <td>{{ o.cliente.email }}</td>
+                    <td>
+                        {% for d in o.dettagli.all %}
+                            - {{ d.prodotto.nome }} (x{{ d.quantita }}, €{{ d.prezzo_unitario }})<br>
+                        {% endfor %}
+                    </td>
+                    <td>{{ o.totale }}</td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="4">Nessun ordine trovato.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 
     {% if errore %}
         <p>{{ errore }}</p>
     {% endif %}
 
-    <a href="{% url 'index' %}">Torna alla home</a>
+    <a href="{% url 'home' %}">Torna alla home</a>
 {% endblock body %}
 

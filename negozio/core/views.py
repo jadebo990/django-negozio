@@ -1,8 +1,8 @@
 from django.shortcuts import render
 from core.models import Prodotto, Ordine
 
-def index(request):
-    return render(request, "index.html")
+def home(request):
+    return render(request, "home.html")
 
 
 def prodotti(request):
@@ -11,11 +11,6 @@ def prodotti(request):
     context = {
         "prodotti" : prodotti
     }
-
-    if not prodotti:
-        context = {
-            "errore" : "prodotti non trovati"
-        }
 
     return render(request, "prodotti.html", context)
 
@@ -26,11 +21,6 @@ def ordini(request):
     context = {
         "ordini" : ordini
     }
-
-    if not ordini:
-        context = {
-            "errore" : "ordini non trovati"
-        }
 
     return render(request, "ordini.html", context)
     
