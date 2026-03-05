@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}Ordini{% endblock title %}
 
@@ -14,7 +15,8 @@
                 <div class="mb-3">
                     <label for="selectCliente" class="form-label">Seleziona un cliente:</label>
                     <select id="selectCliente" class="form-select" aria-label="select cliente">
-                        <!-- js creerà il contenuto -->
+                        <option>Caricamento...</option>
+                        <!-- js -->
                     </select>
                 </div>
                 
@@ -23,7 +25,7 @@
                     <div class="flex-grow-1">
                         <label for="selectProdotto" class="form-label">Seleziona un prodotto:</label>
                         <select id="selectProdotto" class="form-select" aria-label="select prodotto">
-                            <!-- js creerà il contenuto -->
+                            <!-- js  -->
                         </select>
                     </div>
                     <div>
@@ -106,3 +108,6 @@
     
 {% endblock body %}
 
+{% block extra_js %}
+    <script type="module" src="{% static 'js/ordini.js' %}"></script>
+{% endblock extra_js %}
