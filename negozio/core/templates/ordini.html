@@ -4,41 +4,105 @@
 
 {% block body %}
     {% include 'includes/header.html' %}
-    <h1>Ordini</h1>
-    <h2>Lista ordini:</h2>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>ID ordine</th>
-                <th>Email cliente</th>
-                <th>Prodotti</th>
-                <th>Totale ordine (€)</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for o in ordini %}
-                <tr>
-                    <td>{{ o.id }}</td>
-                    <td>{{ o.cliente.email }}</td>
-                    <td>
-                        {% for d in o.dettagli.all %}
-                            - {{ d.prodotto.nome }} (x{{ d.quantita }}, €{{ d.prezzo_unitario }})<br>
-                        {% endfor %}
-                    </td>
-                    <td>{{ o.totale }}</td>
-                </tr>
-            {% empty %}
-                <tr>
-                    <td colspan="4">Nessun ordine trovato.</td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    <div class="container-fluid d-flex gap-3 flex-column">
+        <h1 class="text-center">Ordini</h1>
 
-    {% if errore %}
-        <p>{{ errore }}</p>
-    {% endif %}
+        <div id="divFormOrdine" class="mx-auto">
+            <h2 id="titoloOperazione">Creazione o Modifica</h2>
+            <form id="formOrdine" class="d-flex flex-column gap-3 bg-light p-5">
+                <!-- cliente -->
+                <div class="mb-3">
+                    <label for="selectCliente" class="form-label">Seleziona un cliente:</label>
+                    <select id="selectCliente" class="form-select" aria-label="select cliente">
+                        <!-- js creerà il contenuto -->
+                    </select>
+                </div>
+                
+                <!-- prodotti -->
+                <div class="mb-3 d-flex gap-3 justify-content-center">
+                    <div class="flex-grow-1">
+                        <label for="selectProdotto" class="form-label">Seleziona un prodotto:</label>
+                        <select id="selectProdotto" class="form-select" aria-label="select prodotto">
+                            <!-- js creerà il contenuto -->
+                        </select>
+                    </div>
+                    <div>
+                        <label for="quantitaProdotto" class="form-label">Quantità:</label>
+                        <input id="quantitaProdotto" type="number" class="form-control" min="1" placeholder="Quantità">
+                    </div>
+                    <button id="btnFormOrdine" type="button" class="btn btn-success">+ Aggiungi</button>
+                </div>
 
-    <a href="{% url 'home' %}">Torna alla home</a>
+                <!-- dettagli -->
+                <div id="divDettagli" class="mb-3 d-none">
+                    <span>Dettagli:</span>
+                    <table class="table text-center">
+                        <thead>
+                            <tr>
+                                <th>Prodotto</th>
+                                <th>Quantità</th>
+                                <th>Prezzo (€)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableDettagli">
+                            <!-- js creerà il contenuto -->
+                        </tbody>
+                    </table>
+                </div>
+                
+                <!-- button -->
+                <button type="submit" class="btn btn-primary">Crea o Modifica</button>
+            </form>
+        </div>
+        
+        <div id="divListaOrdini">
+            <h2>Lista ordini:</h2>
+            <table class="table text-center">
+                <thead>
+                    <tr>
+                        <th>ID ordine</th>
+                        <th>Email cliente</th>
+                        <th>Prodotti</th>
+                        <th>Totale ordine (€)</th>
+                        <th colspan="2">Azioni</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for o in ordini %}
+                        <tr>
+                            <td>{{ o.id }}</td>
+                            <td>{{ o.cliente.email }}</td>
+                            <td>
+                                {% for d in o.dettagli.all %}
+                                    - {{ d.prodotto.nome }} (x{{ d.quantita }}, €{{ d.prezzo_unitario }})<br>
+                                {% endfor %}
+                            </td>
+                            <td>{{ o.totale }}</td>
+                            <td>
+                                <button type="button" class="btn btn-info">MODIFICA</button>
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-danger">ELIMINA</button>
+                            </td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="6">Nessun ordine trovato.</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <div class="text-center">
+                <button id="btnCreaOrdine" class="btn btn-primary">+ Crea ordine</button>
+            </div>
+        </div>
+        <div class="text-center">
+            <a class="btn btn-warning" href="{% url 'home' %}" role="button">Torna alla home</a>
+        </div>
+    </div>
+    
+
+
+    
 {% endblock body %}
 
