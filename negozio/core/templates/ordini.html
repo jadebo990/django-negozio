@@ -11,12 +11,13 @@
         <div id="divFormOrdine" class="mx-auto">
             <h2 id="titoloOperazione">Creazione o Modifica</h2>
             <form id="formOrdine" class="d-flex flex-column gap-3 bg-light p-5">
+                {% csrf_token %}
                 <!-- cliente -->
                 <div class="mb-3">
                     <label for="selectCliente" class="form-label">Seleziona un cliente:</label>
-                    <select id="selectCliente" class="form-select" aria-label="select cliente">
+                    <select id="selectCliente" class="form-select" aria-label="select cliente" required>
                         <option>Caricamento...</option>
-                        <!-- js -->
+                        <!-- js popola -->
                     </select>
                 </div>
                 
@@ -25,14 +26,16 @@
                     <div class="flex-grow-1">
                         <label for="selectProdotto" class="form-label">Seleziona un prodotto:</label>
                         <select id="selectProdotto" class="form-select" aria-label="select prodotto">
-                            <!-- js  -->
+                            <option>Caricamento...</option>
+                            <!-- js  popola -->
                         </select>
                     </div>
                     <div>
                         <label for="quantitaProdotto" class="form-label">Quantità:</label>
                         <input id="quantitaProdotto" type="number" class="form-control" min="1" placeholder="Quantità">
                     </div>
-                    <button id="btnFormOrdine" type="button" class="btn btn-success">+ Aggiungi</button>
+                    <button id="btnAggiungiProdotto" type="button" class="btn btn-success">+ Aggiungi</button>
+                    <button id="btnAnnulla" type="button" class="btn btn-secondary">Annulla</button>
                 </div>
 
                 <!-- dettagli -->
@@ -43,7 +46,8 @@
                             <tr>
                                 <th>Prodotto</th>
                                 <th>Quantità</th>
-                                <th>Prezzo (€)</th>
+                                <th>Prezzo unitario (€)</th>
+                                <th>Elimina</th>
                             </tr>
                         </thead>
                         <tbody id="tableDettagli">
@@ -81,10 +85,10 @@
                             </td>
                             <td>{{ o.totale }}</td>
                             <td>
-                                <button type="button" class="btn btn-info">MODIFICA</button>
+                                <a class="btn btn-info" href="">MODIFICA</a>
                             </td>
                             <td>
-                                <button type="button" class="btn btn-danger">ELIMINA</button>
+                                <button class="btn btn-danger btnDeleteOrdine" data-id-ordine="{{ o.id }}">ELIMINA</button>
                             </td>
                         </tr>
                     {% empty %}

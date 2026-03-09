@@ -1,6 +1,7 @@
 from django.shortcuts import render
-from core.models import Cliente, Prodotto, Ordine
+from core.models import Cliente, Prodotto, Ordine, OrdineProdotto
 from django.http import JsonResponse
+import json
 
 def home(request):
     return render(request, "home.html")
@@ -41,3 +42,44 @@ def getClienti(request):
     # Di default JsonResponse accetta solo dict e clienti è una lista di dict
     # per risolvere specifico safe
     return JsonResponse(clienti, safe=False)
+
+def getProdotti(request):
+    prodotti = list(Prodotto.objects.values())
+    return JsonResponse(prodotti, safe=False)
+
+
+
+
+def detailOrdini(request, pk):
+    if request.method == 'DELETE':
+        return deleteOrdini(request, pk)
+    elif request.method == 'PATCH':
+        pass
+    else:
+        pass
+
+def postOrdine(request):
+    data = json.loads(request.body)
+    data_ordine = data["ordine"]
+    data_dettagli = data["dettagli"]
+
+    cliente = Cliente.objects.get(pk=data_ordine["cliente"])
+    
+    # oppure sovrascrivo il metoodo create creando li dentro  i vari ordineprodotto??? #
+    nuovo_ordine = Ordine.objects.create(cliente=cliente)
+    for d in data_dettagli:
+        prodotto = Prodotto.objects.get(pk=d["prodotto"])
+        OrdineProdotto.objects.create(
+            ordine=nuovo_ordine,
+            prodotto=prodotto,
+            quantita=d["quantita"],
+            prezzo_unitario=prodotto.prezzo
+        )
+    
+    return JsonResponse({"status" : "ok"})
+
+
+def deleteOrdini(request, pk):
+    ordine = Ordine.objects.get(pk=pk)
+    ordine.delete()
+    return JsonResponse({"status" : "ok"})
